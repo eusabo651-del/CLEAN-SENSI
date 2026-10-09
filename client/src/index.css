@@ -1090,3 +1090,19 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .yx-bypass-mark { display: grid; place-items: center; width: 54px; height: 54px; margin-bottom: 5px; border: 1px solid #28517b; border-radius: 50%; color: #9dccff; background: #10233a; }
 .yx-bypass-overlay b { font-size: 14px; }
 .yx-bypass-overlay span { color: #91a5bf; font-size: 11px; }
+
+
+/* Navegação principal inferior em celulares, com área de toque maior. */
+@media (max-width: 760px) {
+  .rd-sidebar { position: fixed; z-index: 80; top: auto; right: 0; bottom: 0; left: 0; flex-direction: row; align-items: center; gap: 6px; width: 100%; height: auto; min-height: 76px; padding: 8px 10px calc(8px + env(safe-area-inset-bottom)); border: 0; border-top: 1px solid #244263; background: linear-gradient(180deg, #0d1e33f5, #07111ff7); box-shadow: 0 -10px 30px #0006; backdrop-filter: blur(18px); }
+  .rd-user-nav { display: flex; flex: 1 1 auto; align-items: center; justify-content: space-around; gap: 3px; min-width: 0; overflow-x: auto; }
+  .rd-user-nav button { flex: 0 1 auto; justify-content: center; gap: 5px; min-height: 51px; padding: 0 9px; border-radius: 11px; font-size: 10px; white-space: nowrap; }
+  .rd-user-nav button svg { width: 16px; height: 16px; }
+  .rd-user-nav button.active { border-color: #28527d; background: linear-gradient(115deg, #12345a, #0e2036); }
+  .rd-user-nav button.active::before { top: auto; right: 10px; bottom: 2px; left: 10px; width: auto; height: 2px; border-radius: 2px; background: #55a4ff; box-shadow: 0 0 10px #55a4ff80; }
+  .rd-sidebar-foot { display: block; flex: 0 0 auto; margin: 0; padding: 0; border: 0; }
+  .rd-logout { width: 42px; min-height: 42px; border-radius: 11px; }
+  .rd-logout span { display: none; }
+  .rd-user-main .page-view { padding-bottom: calc(122px + env(safe-area-inset-bottom)); }
+  .rd-user-main .page-view.yx-aux-page { padding-bottom: calc(130px + env(safe-area-inset-bottom)) !important; }
+}
