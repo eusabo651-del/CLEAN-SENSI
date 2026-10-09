@@ -1092,17 +1092,35 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .yx-bypass-overlay span { color: #91a5bf; font-size: 11px; }
 
 
-/* Navegação principal inferior em celulares, com área de toque maior. */
+/* Login CLEAN SENSI tipográfico, sem logo em imagem. */
+.login-brand-wordmark { color: #f4f8ff; font-size: 14px; font-weight: 900; letter-spacing: .16em; }
+.login-copy { justify-content: center; background: radial-gradient(ellipse at 18% 20%, #12365a88, transparent 48%), linear-gradient(145deg, #07111f, #0a1a2c 70%, #08111c); }
+.login-copy h1 { max-width: 100%; font-size: clamp(72px, 9vw, 128px); line-height: .9; letter-spacing: -.075em; }
+.login-copy p { max-width: 460px; }
 @media (max-width: 760px) {
-  .rd-sidebar { position: fixed; z-index: 80; top: auto; right: 0; bottom: 0; left: 0; flex-direction: row; align-items: center; gap: 6px; width: 100%; height: auto; min-height: 76px; padding: 8px 10px calc(8px + env(safe-area-inset-bottom)); border: 0; border-top: 1px solid #244263; background: linear-gradient(180deg, #0d1e33f5, #07111ff7); box-shadow: 0 -10px 30px #0006; backdrop-filter: blur(18px); }
-  .rd-user-nav { display: flex; flex: 1 1 auto; align-items: center; justify-content: space-around; gap: 3px; min-width: 0; overflow-x: auto; }
-  .rd-user-nav button { flex: 0 1 auto; justify-content: center; gap: 5px; min-height: 51px; padding: 0 9px; border-radius: 11px; font-size: 10px; white-space: nowrap; }
-  .rd-user-nav button svg { width: 16px; height: 16px; }
-  .rd-user-nav button.active { border-color: #28527d; background: linear-gradient(115deg, #12345a, #0e2036); }
-  .rd-user-nav button.active::before { top: auto; right: 10px; bottom: 2px; left: 10px; width: auto; height: 2px; border-radius: 2px; background: #55a4ff; box-shadow: 0 0 10px #55a4ff80; }
-  .rd-sidebar-foot { display: block; flex: 0 0 auto; margin: 0; padding: 0; border: 0; }
-  .rd-logout { width: 42px; min-height: 42px; border-radius: 11px; }
-  .rd-logout span { display: none; }
-  .rd-user-main .page-view { padding-bottom: calc(122px + env(safe-area-inset-bottom)); }
-  .rd-user-main .page-view.yx-aux-page { padding-bottom: calc(130px + env(safe-area-inset-bottom)) !important; }
+  .login-copy h1 { font-size: clamp(54px, 14vw, 84px); }
+}
+
+/* Modal de criação de keys: preto com rótulos, valores e opções em branco. */
+.create-license-modal { color-scheme: dark; border-color: #26384f; color: #f5f8fc; background: #05080d !important; }
+.create-license-modal .modal-heading h2,
+.create-license-modal .modal-heading .eyebrow,
+.create-license-modal .modal-description,
+.create-license-modal .admin-form label > span,
+.create-license-modal .modal-info { color: #f5f8fc; }
+.create-license-modal .admin-form label > span { font-size: 11px; font-weight: 700; }
+.create-license-modal .input-shell { border-color: #2b3b50; color: #fff; background: #000 !important; }
+.create-license-modal .input-shell > svg { color: #c5d8ef; }
+.create-license-modal .input-shell input,
+.create-license-modal .input-shell select { color: #fff !important; background: #000 !important; }
+.create-license-modal .input-shell input::placeholder { color: #a6b2c0; opacity: 1; }
+.create-license-modal .input-shell select option { color: #fff; background: #000; }
+.create-license-modal .modal-info { border: 1px solid #202c3a; background: #0a0d12; }
+
+/* A key recém-gerada fica branca, grande e fácil de selecionar/copiar no desktop. */
+.created-key-banner { border-color: #26384f; background: #05080d; }
+.created-key-banner span { color: #d4dfec; }
+.created-key-banner b { color: #fff; font-size: clamp(16px, 1.55vw, 22px); line-height: 1.35; white-space: normal; overflow-wrap: anywhere; }
+@media (max-width: 760px) {
+  .created-key-banner b { font-size: clamp(14px, 3.8vw, 18px); }
 }
