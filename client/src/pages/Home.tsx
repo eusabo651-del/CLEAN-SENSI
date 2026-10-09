@@ -279,16 +279,17 @@ function AuxilioPage() {
   ];
   const titles = { aimbot: "AIMBOT", sensi: "OTIMIZAÇÃO", modules: "MÓDULOS", injection: "TERMUX CODES" };
   const descriptions = { aimbot: "Assistência e ajustes de precisão", sensi: "Escolha a plataforma e o perfil", modules: "Atalhos dos recursos do painel", injection: "Abrir Free Fire normal ou MAX" };
+  const sectionNumber = String(tabs.findIndex(item => item.id === tab) + 1).padStart(2, "0");
   return <div className="page-view yx-aux-page">
-    <section className="yx-aux-window">
+    <section className="yx-aux-window yx-aux-console">
       <header className="yx-aux-heading">
-        <div className="yx-aux-heading-copy"><span>CLEAN SENSI · MIRA</span><p>Ajustes de mira, desempenho e módulos em um só lugar.</p></div>
-        <span className="yx-aux-status"><i /> ONLINE</span>
+        <div className="yx-aux-heading-copy"><span>PAINEL AUXILIAR / CONTROLE FINO</span><h1>Central de auxílio</h1><p>Ajuste sua sessão por módulos, sem sair do painel.</p></div>
+        <div className="yx-aux-heading-side"><span className="yx-aux-status"><i /> ONLINE</span><span className="yx-aux-mode-count"><b>04</b><small>MODOS DE CONTROLE</small></span></div>
       </header>
       <nav className="yx-aux-tabs" aria-label="Seções do auxílio">
         {tabs.map(item => <button key={item.id} className={tab === item.id ? "active" : ""} onClick={() => setTab(item.id)}>{item.icon && <item.icon size={17} />}<span>{item.label}</span></button>)}
       </nav>
-      <div className="yx-aux-title"><div><span>CLEAN SENSI / {titles[tab]}</span><h2>{titles[tab] === "AIMBOT" ? "AUXILIO DE MIRA" : titles[tab]}</h2><p>{descriptions[tab]}</p></div></div>
+      <div className="yx-aux-title"><div><span>SEÇÃO {sectionNumber} / 04</span><h2>{titles[tab] === "AIMBOT" ? "AUXÍLIO DE MIRA" : titles[tab]}</h2><p>{descriptions[tab]}</p></div><div className="yx-aux-section-number" aria-hidden="true"><b>{sectionNumber}</b><small>/ 04</small></div></div>
       {tab === "aimbot" && <div className="aux-panel-list yx-aim-list">
         <AuxToggle label="Assistência de Mira Leve" description="Movimento suave e natural" value={toggles.light} onClick={() => toggle("light")} />
         <AuxToggle label="Assistência de Mira Precisa" description="Ajuste preciso da resposta" value={toggles.precise} onClick={() => toggle("precise")} />
