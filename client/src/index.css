@@ -1124,3 +1124,25 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 @media (max-width: 760px) {
   .created-key-banner b { font-size: clamp(14px, 3.8vw, 18px); }
 }
+
+
+/* Mais espaço para a leitura da key e para o botão adicional de copiar. */
+.table-head, .table-row { grid-template-columns: minmax(245px, 1.8fr) minmax(86px, .72fr) minmax(128px, .98fr) minmax(140px, 1fr) minmax(72px, .48fr) minmax(175px, 1.25fr); gap: 10px; }
+.user-cell > div:last-child { flex: 1; min-width: 0; }
+.key-text { display: block; max-width: 100%; overflow: visible; margin-top: 6px; color: #fff !important; font-size: 12px; font-weight: 700; line-height: 1.4; white-space: normal; overflow-wrap: anywhere; }
+.row-actions { gap: 5px; }
+.row-actions button { width: 31px; height: 31px; color: #e4efff; background: #111d2b; }
+.row-actions button:hover { color: #fff; background: #1b3552; }
+@media (max-width: 1000px) and (min-width: 761px) {
+  .table-head, .table-row { grid-template-columns: minmax(205px, 1.6fr) minmax(75px, .7fr) minmax(110px, .9fr) minmax(125px, 1fr) minmax(65px, .5fr) minmax(155px, 1.2fr); gap: 7px; }
+  .row-actions { gap: 3px; }
+  .row-actions button { width: 28px; height: 28px; }
+  .key-text { font-size: 11px; }
+}
+@media (max-width: 760px) {
+  .table-head { display: none; }
+  .table-row { display: block; padding-bottom: 62px; }
+  .key-text { max-width: 100%; font-size: 12px; }
+  .row-actions { gap: 5px; }
+  .row-actions button { width: 31px; height: 31px; }
+}
