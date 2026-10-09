@@ -11,7 +11,6 @@ import {
   Clipboard,
   Clock3,
   Copy,
-  Code2,
   Crosshair,
   Crown,
   Gauge,
@@ -285,9 +284,9 @@ function AuxilioPage() {
     { id: "aimbot", label: "AIMBOT", icon: Target },
     { id: "sensi", label: "OTIMIZAÇÃO", icon: ShieldCheck },
     { id: "modules", label: "MÓDULOS", icon: Grid3X3 },
-    { id: "injection", label: "TERMUX CODES", icon: TerminalSquare },
+    { id: "injection", label: "ABRIR JOGO", icon: TerminalSquare },
   ];
-  const titles = { aimbot: "AIMBOT", sensi: "OTIMIZAÇÃO", modules: "MÓDULOS", injection: "TERMUX CODES" };
+  const titles = { aimbot: "AIMBOT", sensi: "OTIMIZAÇÃO", modules: "MÓDULOS", injection: "ABRIR JOGO" };
   const descriptions = { aimbot: "Assistência e ajustes de precisão", sensi: "Escolha a plataforma e o perfil", modules: "Atalhos dos recursos do painel", injection: "Abrir Free Fire normal ou MAX" };
   const sectionNumber = String(tabs.findIndex(item => item.id === tab) + 1).padStart(2, "0");
   return <div className="page-view yx-aux-page">
@@ -302,19 +301,19 @@ function AuxilioPage() {
       </nav>
       <div className="yx-aux-title"><div><span>SEÇÃO {sectionNumber} / 04</span><h2>{titles[tab] === "AIMBOT" ? "AUXÍLIO DE MIRA" : titles[tab]}</h2><p>{descriptions[tab]}</p></div><div className="yx-aux-section-number" aria-hidden="true"><b>{sectionNumber}</b><small>/ 04</small></div></div>
       {tab === "aimbot" && <div className="aux-panel-list yx-aim-list">
-        <AuxToggle label="Assistência de Mira Leve" description="Movimento suave e natural" value={toggles.light} onClick={() => toggle("light")} />
-        <AuxToggle label="Assistência de Mira Precisa" description="Ajuste preciso da resposta" value={toggles.precise} onClick={() => toggle("precise")} />
-        <AuxToggle label="Estabilização de Mira" description="Movimento mais consistente" value={toggles.stabilize} onClick={() => toggle("stabilize")} />
-        <AuxToggle label="Controle de Recuo" description="Ajuste fino do controle" value={toggles.recoil} onClick={() => toggle("recoil")} />
-        <AuxToggle label="Ajuste Fino de Precisão" description="Personalize o perfil de mira" value={toggles.fine} onClick={() => toggle("fine")} />
+        <AuxToggle label="Assistência de Mira Leve" description="Movimento suave e natural" icon={Crosshair} value={toggles.light} onClick={() => toggle("light")} />
+        <AuxToggle label="Assistência de Mira Precisa" description="Ajuste preciso da resposta" icon={Target} value={toggles.precise} onClick={() => toggle("precise")} />
+        <AuxToggle label="Estabilização de Mira" description="Movimento mais consistente" icon={Anchor} value={toggles.stabilize} onClick={() => toggle("stabilize")} />
+        <AuxToggle label="Controle de Recuo" description="Ajuste fino do controle" icon={MoveDown} value={toggles.recoil} onClick={() => toggle("recoil")} />
+        <AuxToggle label="Ajuste Fino de Precisão" description="Personalize o perfil de mira" icon={SlidersHorizontal} value={toggles.fine} onClick={() => toggle("fine")} />
       </div>}
       {tab === "sensi" && <div className="aux-center-panel yx-performance-panel"><Gauge size={38} /><h2>Selecione seu celular</h2><p>Escolha a plataforma para continuar no gerador.</p><div className="aux-choice-row"><button onClick={() => toast.info("Dispositivo computado com sucesso!")}>iOS</button><button className="selected" onClick={() => toast.info("Dispositivo computado com sucesso!")}>Android</button></div></div>}
       {tab === "modules" && <div className="aux-module-grid yx-module-grid">
-        <AuxModule name="Mira leve" active={toggles.light} onClick={() => toggle("light")} />
-        <AuxModule name="Mira precisa" active={toggles.precise} onClick={() => toggle("precise")} />
-        <AuxModule name="Estabilização" active={toggles.stabilize} onClick={() => toggle("stabilize")} />
-        <AuxModule name="Controle de recuo" active={toggles.recoil} onClick={() => toggle("recoil")} />
-        <AuxModule name="Ajuste fino" active={toggles.fine} onClick={() => toggle("fine")} />
+        <AuxModule name="Mira leve" icon={Crosshair} active={toggles.light} onClick={() => toggle("light")} />
+        <AuxModule name="Mira precisa" icon={Target} active={toggles.precise} onClick={() => toggle("precise")} />
+        <AuxModule name="Estabilização" icon={Anchor} active={toggles.stabilize} onClick={() => toggle("stabilize")} />
+        <AuxModule name="Controle de recuo" icon={MoveDown} active={toggles.recoil} onClick={() => toggle("recoil")} />
+        <AuxModule name="Ajuste fino" icon={SlidersHorizontal} active={toggles.fine} onClick={() => toggle("fine")} />
         <button type="button" className="aux-module" onClick={quickExitNow}><span className="termux-code-icon" aria-hidden="true"><LogOut size={22} /></span><span><b>Bypass</b><small>Saída rápida</small></span><i><ChevronRight size={15} /></i></button>
       </div>}
       {tab === "injection" && <div className="aux-injection yx-injection"><div className="aux-action-row"><button onClick={() => { openGame("normal"); inject("FF NORMAL"); }} disabled={Boolean(injecting)}>ABRIR FF NORMAL</button><button onClick={() => { openGame("max"); inject("FF MAX"); }} disabled={Boolean(injecting)}>ABRIR FF MAX</button></div><div className={`aux-injection-state ${active ? "active" : ""}`}>{injecting ? <><RefreshCw className="spin" size={18} /> Preparando...</> : active ? <><span className="aux-green-dot" /> {active} pronto</> : "Escolha uma versão do jogo"}</div><div className="aux-console">{logs.map((log, index) => <div key={`${log}-${index}`} className={log.includes("SUCESSO") ? "success" : ""}><span>[{new Date().toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit", second: "2-digit" })}]</span> {log}</div>)}</div></div>}
@@ -322,8 +321,8 @@ function AuxilioPage() {
     </section>
   </div>;
 }
-function AuxToggle({ label, description, value, onClick }: { label: string; description: string; value: boolean; onClick: () => void }) { return <button type="button" className="aux-toggle-row yx-aim-row" aria-pressed={value} onClick={onClick}><span className="termux-code-icon" aria-hidden="true"><Code2 size={22} /></span><span className="yx-aim-copy"><b>{label}</b><small>{description}</small></span><i className={value ? "on" : ""}><em /></i></button>; }
-function AuxModule({ name, active, onClick }: { name: string; active: boolean; onClick: () => void }) { return <button className={`aux-module ${active ? "active" : ""}`} onClick={onClick}><span className="termux-code-icon" aria-hidden="true"><Code2 size={22} /></span><span><b>{name}</b><small>{active ? "Ativado" : "Toque para ativar"}</small></span><i>{active ? <Check size={14} /> : <ChevronRight size={15} />}</i></button>; }
+function AuxToggle({ label, description, value, onClick, icon: Icon }: { label: string; description: string; value: boolean; onClick: () => void; icon: React.ElementType }) { return <button type="button" className="aux-toggle-row yx-aim-row" aria-pressed={value} onClick={onClick}><span className="termux-code-icon" aria-hidden="true"><Icon size={22} /></span><span className="yx-aim-copy"><b>{label}</b><small>{description}</small></span><i className={value ? "on" : ""}><em /></i></button>; }
+function AuxModule({ name, active, onClick, icon: Icon }: { name: string; active: boolean; onClick: () => void; icon: React.ElementType }) { return <button className={`aux-module ${active ? "active" : ""}`} onClick={onClick}><span className="termux-code-icon" aria-hidden="true"><Icon size={22} /></span><span><b>{name}</b><small>{active ? "Ativado" : "Toque para ativar"}</small></span><i>{active ? <Check size={14} /> : <ChevronRight size={15} />}</i></button>; }
 
 function HistoryPage({ favoritesOnly = false }: { favoritesOnly?: boolean }) {
   const query = favoritesOnly ? trpc.generator.favorites.useQuery() : trpc.generator.history.useQuery();
