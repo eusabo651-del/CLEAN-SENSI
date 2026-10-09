@@ -54,6 +54,10 @@ O campo `id` pode ser criado pela MockAPI. As keys novas usam o prefixo `CLEAN-S
 
 O botão **Discord** na tela de login e a página Sobre direcionam para [discord.gg/EDBtEVWpTM](https://discord.gg/EDBtEVWpTM).
 
+## Ativos visuais
+
+A logo principal foi fornecida para este projeto. A imagem da XM8 (`client/public/xm8-free-fire.webp`) é da página comunitária [XM8 — Free Fire Wiki](https://garenafreefire.fandom.com/wiki/XM8), cujo conteúdo comunitário é indicado como **CC BY-SA**; a atribuição e a licença dessa imagem permanecem aplicáveis ao ativo.
+
 ## PWA
 
 O título, tema e manifesto de instalação estão configurados para CLEAN SENSI. Para atualizar uma instalação antiga no celular após o deploy, feche e reabra o PWA; se o cache persistir, remova o atalho antigo e adicione-o novamente pelo navegador.

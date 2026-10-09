@@ -484,7 +484,6 @@ body { background: #060506; }
 .yx-aux-page { width: min(1120px, calc(100% - 64px)); padding: 36px 0 56px; }
 .yx-aux-window { position: relative; overflow: hidden; width: 100%; padding: clamp(18px, 3vw, 34px); border: 1px solid #2f2f2f; border-radius: 20px; background: radial-gradient(ellipse at 4% 0%, #21212166, transparent 34%), linear-gradient(145deg, #121011, #090809 68%); box-shadow: 0 20px 65px #0009, 0 0 46px #6b6b6b0c; }
 .yx-aux-window::before { position: absolute; z-index: 1; inset: 0; pointer-events: none; border-radius: inherit; background-image: linear-gradient(135deg, #aaaaaa0a 1px, transparent 1px); background-size: 34px 34px; content: ""; mask-image: linear-gradient(to bottom right, #000, transparent 56%); }
-.yx-aux-window > .yx-aux-background { position: absolute; z-index: 0; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 51%; opacity: .18; filter: grayscale(1) brightness(.62) contrast(1.08); pointer-events: none; }
 .yx-aux-window > :not(.yx-aux-background) { position: relative; z-index: 2; }
 .yx-aux-heading { display: flex; align-items: center; gap: 15px; min-height: 72px; padding: 2px 0 14px; }
 .yx-aux-heading-copy { min-width: 0; }
@@ -634,7 +633,6 @@ body { background: linear-gradient(135deg, #050505 0%, #222 52%, #080808 100%); 
 .yx-aux-page { width: min(1220px, calc(100% - 76px)); padding: 30px 0 48px; }
 .yx-aux-window { padding: clamp(24px, 3.4vw, 44px); border: 1px solid #444; border-radius: 24px; background: linear-gradient(145deg, #171717eF, #080808F5 74%); box-shadow: 0 28px 85px #000b; backdrop-filter: blur(18px); }
 .yx-aux-window::before { border-radius: inherit; background-image: linear-gradient(135deg, #fff1 1px, transparent 1px); background-size: 40px 40px; opacity: .6; }
-.yx-aux-window > .yx-aux-background { object-position: center 38%; opacity: .14; filter: grayscale(1) brightness(.43) contrast(1.16); }
 .yx-aux-heading { min-height: 96px; padding: 4px 0 22px; border-bottom: 1px solid #3a3a3a; }
 .yx-aux-heading-copy > span, .yx-aux-title > div > span { color: #c6c6c6; }
 .yx-aux-heading-copy h1 { font-size: clamp(25px, 4vw, 38px); letter-spacing: -.065em; }
@@ -718,17 +716,7 @@ body { background: linear-gradient(135deg, #050505 0%, #222 52%, #080808 100%); 
 }
 
 
-/* Partículas amostradas da própria fotografia: dissolvem e se recompõem em ciclo leve. */
-.rd-login-photo .rd-particle-base { position: absolute; z-index: 0; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 43%; filter: grayscale(1) brightness(.76) contrast(1.14); opacity: .58; transition: opacity .2s linear; }
-.rd-login-photo .rd-particle-canvas { position: absolute; z-index: 1; inset: 0; display: block; width: 100%; height: 100%; pointer-events: none; mix-blend-mode: screen; }
-.rd-login-photo::after { z-index: 2; }
-.rd-login-photo figcaption { z-index: 3; }
-@media (prefers-reduced-motion: reduce) {
-  .rd-login-photo .rd-particle-canvas { mix-blend-mode: normal; }
-}
-
-
-/* Chuva global de pequenos recortes da fotografia enviada; não intercepta controles. */
+/* Partículas azuis decorativas; não interceptam os controles. */
 .rd-particle-rain { position: fixed; z-index: 70; inset: 0; display: block; width: 100vw; height: 100vh; pointer-events: none; opacity: .52; mix-blend-mode: screen; }
 
 /* Layout da aba Auxílio inspirado na gravação: trilho lateral, painel único e destaque vermelho. */
@@ -736,7 +724,6 @@ body { background: linear-gradient(135deg, #050505 0%, #222 52%, #080808 100%); 
 .rd-user-main .page-view:not(.yx-aux-page) { filter: grayscale(1); }
 .yx-aux-page { width: min(1040px, calc(100% - 56px)) !important; padding: 38px 0 64px !important; }
 .yx-aux-window { display: grid !important; grid-template-columns: 84px minmax(0, 1fr); grid-template-rows: auto auto auto auto; column-gap: 30px; min-height: 610px; padding: 26px 30px 21px !important; border: 1px solid #303136; border-radius: 24px; background: #151619 !important; box-shadow: 0 28px 80px #000b; }
-.yx-aux-window > .yx-aux-background { opacity: .07 !important; }
 .yx-aux-window > .yx-aux-heading { grid-column: 2; grid-row: 1; min-height: 77px; padding: 3px 0 19px; border-bottom: 1px solid #303136; }
 .yx-aux-heading-copy > span, .yx-aux-title > div > span { color: #a9aaaf; }
 .yx-aux-heading-copy h1 { color: #f5f5f6; font-size: clamp(23px, 3.5vw, 31px); text-transform: uppercase; }
@@ -809,15 +796,6 @@ body { background: linear-gradient(135deg, #050505 0%, #222 52%, #080808 100%); 
   .aux-toggle-row.yx-aim-row .ffh4x-icon { width: 43px; height: 27px; }
   .yx-module-grid .aux-module .ffh4x-icon { width: 42px; height: 28px; }
 }
-
-/* Banner de Scarface no cabeçalho da aba Auxílio. */
-.yx-aux-window > .yx-aux-heading { min-height: 146px; }
-.aux-scarface-banner { display: block; width: min(100%, 560px); height: 74px; margin: 14px 0 10px; border: 1px solid #3b3b3b; border-radius: 9px; object-fit: cover; object-position: center; filter: brightness(.82) contrast(1.12); }
-@media (max-width: 760px) {
-  .yx-aux-window > .yx-aux-heading { min-height: 119px; }
-  .aux-scarface-banner { height: 51px; margin: 10px 0 8px; border-radius: 7px; }
-}
-
 
 /* CLEAN SENSI — azul-marinho e hierarquia visual assimétrica. */
 :root {
@@ -955,3 +933,31 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   .hero-panel { background: radial-gradient(circle at 95% 10%, #15395f 0, transparent 40%), linear-gradient(130deg, #102a47, #091625); }
   .discord-login-button { min-height: 52px; }
 }
+
+
+/* Logo oficial enviada para este build e arte XM8 usada como ícone dos controles. */
+.brand-icon { overflow: hidden; border: 1px solid #22528f; background: #020712; box-shadow: 0 8px 25px #0750a433; }
+.brand-icon img { display: block; width: 100%; height: 100%; border-radius: inherit; object-fit: cover; }
+.login-photo.clean-brand-hero { display: grid; place-items: center; background: radial-gradient(circle at 50% 44%, #12396a 0, #0a1930 39%, #06101d 74%); }
+.login-photo.clean-brand-hero::after { z-index: 0; background: linear-gradient(180deg, #02081410, #02081433 63%, #020814e0); }
+.login-photo.clean-brand-hero .clean-brand-hero-logo { position: absolute; z-index: 1; top: 43%; left: 50%; display: block; width: min(55%, 320px); height: auto; aspect-ratio: 1; border-radius: 50%; object-fit: contain; filter: none; opacity: .98; transform: translate(-50%, -50%); box-shadow: 0 12px 55px #00102d88; }
+.login-photo.clean-brand-hero figcaption { z-index: 2; color: #d9eaff; }
+.about-eye-banner { display: grid; place-items: center; overflow: hidden; border-color: #28517b; background: radial-gradient(circle at 50% 50%, #16385f, #09182a 70%); }
+.about-eye-banner .about-brand-logo { position: relative; z-index: 1; display: block; width: min(68%, 300px); height: auto; aspect-ratio: 1; border-radius: 50%; object-fit: contain; filter: none; box-shadow: 0 16px 50px #0009; }
+.yx-aux-window { background-image: radial-gradient(circle at 90% 0, #14395d50, transparent 38%), linear-gradient(145deg, #0c1d32, #07111e 75%) !important; }
+.yx-aux-window > .yx-aux-heading { min-height: 82px; }
+.xm8-weapon { display: block; width: 58px; height: 31px; flex: 0 0 58px; object-fit: contain; object-position: center; filter: drop-shadow(0 3px 6px #0009); }
+.aux-toggle-row.yx-aim-row .xm8-weapon { width: 60px; height: 32px; flex-basis: 60px; }
+.yx-module-grid .aux-module .xm8-weapon { width: 52px; height: 28px; flex-basis: 52px; }
+@media (max-width: 760px) {
+  .login-photo.clean-brand-hero .clean-brand-hero-logo { width: min(62%, 230px); }
+  .about-eye-banner .about-brand-logo { width: min(66%, 220px); }
+  .yx-aux-window > .yx-aux-heading { min-height: 71px; }
+  .aux-toggle-row.yx-aim-row .xm8-weapon { width: 45px; height: 25px; flex-basis: 45px; }
+  .yx-module-grid .aux-module .xm8-weapon { width: 42px; height: 23px; flex-basis: 42px; }
+}
+
+
+/* O monograma da navegação Auxílio também usa a logo fornecida. */
+.yx-aux-tabs::before { content: ""; border-color: #28517b; background-color: #020712; background-image: url("/clean-sensi-icon-192.png"); background-position: center; background-repeat: no-repeat; background-size: cover; box-shadow: 0 8px 22px #0750a433; }
+@media (max-width: 760px) { .yx-aux-tabs::before { background-size: cover; } }

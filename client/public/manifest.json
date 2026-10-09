@@ -9,19 +9,19 @@
   "lang": "pt-BR",
   "icons": [
     {
-      "src": "/rd-icon-192.png",
+      "src": "/clean-sensi-icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/rd-icon-512.png",
+      "src": "/clean-sensi-icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/rd-icon-maskable-512.png",
+      "src": "/clean-sensi-icon-maskable-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"

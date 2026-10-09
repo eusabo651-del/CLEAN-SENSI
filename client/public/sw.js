@@ -1,5 +1,5 @@
-const CACHE_NAME = "clean-sensi-shell-v2";
-const APP_SHELL = ["/", "/manifest.json", "/rd-icon-180.png", "/rd-icon-192.png", "/rd-icon-512.png", "/rd-icon-maskable-512.png", "/rd-portrait.jpeg"];
+const CACHE_NAME = "clean-sensi-shell-v3";
+const APP_SHELL = ["/", "/manifest.json", "/clean-sensi-logo.png", "/clean-sensi-icon-180.png", "/clean-sensi-icon-192.png", "/clean-sensi-icon-512.png", "/clean-sensi-icon-maskable-512.png", "/xm8-free-fire.webp"];
 
 self.addEventListener("install", event => {
   event.waitUntil(caches.open(CACHE_NAME).then(cache => cache.addAll(APP_SHELL)).then(() => self.skipWaiting()));
