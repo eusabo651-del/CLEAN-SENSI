@@ -1,0 +1,30 @@
+{
+  "name": "CLEAN SENSI",
+  "short_name": "CLEAN SENSI",
+  "description": "Gerador de sensibilidade e painel para jogadores.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#071426",
+  "theme_color": "#071426",
+  "lang": "pt-BR",
+  "icons": [
+    {
+      "src": "/rd-icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/rd-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/rd-icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
