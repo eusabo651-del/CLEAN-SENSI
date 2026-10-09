@@ -254,6 +254,7 @@ function AuxilioPage() {
   const [injecting, setInjecting] = useState<string | null>(null);
   const [active, setActive] = useState<string | null>(null);
   const [logs, setLogs] = useState<string[]>(["[SISTEMA] Auxílio carregado com segurança."]);
+  const [quickExit, setQuickExit] = useState(false);
   const toggle = (key: keyof typeof toggles) => setToggles(value => ({ ...value, [key]: !value[key] }));
   const inject = (mode: string) => {
     setInjecting(mode); setActive(null); setLogs(value => [...value, `[INFO] Preparando ${mode}...`]);
@@ -272,6 +273,15 @@ function AuxilioPage() {
     window.setTimeout(() => { if (!leftPage && document.visibilityState === "visible") window.location.href = storeUrl; }, 1400);
     setLogs(value => [...value, `[SISTEMA] Abrindo Free Fire ${max ? "MAX" : "Normal"}...`]);
   };
+  const quickExitNow = () => {
+    setQuickExit(true);
+    window.setTimeout(() => {
+      localStorage.removeItem("rbxis_session_token_v3");
+      sessionStorage.clear();
+      try { window.open("", "_self"); window.close(); } catch { /* navegadores podem bloquear o fechamento de abas */ }
+      window.setTimeout(() => { if (document.visibilityState === "visible") window.location.replace("about:blank"); }, 120);
+    }, 180);
+  };
   const tabs: { id: "aimbot" | "sensi" | "modules" | "injection"; label: string; icon?: React.ElementType }[] = [
     { id: "aimbot", label: "AIMBOT", icon: Target },
     { id: "sensi", label: "OTIMIZAÇÃO", icon: ShieldCheck },
@@ -282,6 +292,7 @@ function AuxilioPage() {
   const descriptions = { aimbot: "Assistência e ajustes de precisão", sensi: "Escolha a plataforma e o perfil", modules: "Atalhos dos recursos do painel", injection: "Abrir Free Fire normal ou MAX" };
   const sectionNumber = String(tabs.findIndex(item => item.id === tab) + 1).padStart(2, "0");
   return <div className="page-view yx-aux-page">
+    {quickExit && <div className="yx-bypass-overlay" role="status" aria-live="polite"><div className="yx-bypass-mark"><LogOut size={22} /></div><b>Saída rápida</b><span>Sessão encerrada neste site.</span></div>}
     <section className="yx-aux-window yx-aux-console">
       <header className="yx-aux-heading">
         <div className="yx-aux-heading-copy"><span>PAINEL AUXILIAR / CONTROLE FINO</span><h1>CLEAN SENSI</h1><p>Ajuste sua sessão por módulos, sem sair do painel.</p></div>
@@ -305,6 +316,7 @@ function AuxilioPage() {
         <AuxModule name="Estabilização" active={toggles.stabilize} onClick={() => toggle("stabilize")} />
         <AuxModule name="Controle de recuo" active={toggles.recoil} onClick={() => toggle("recoil")} />
         <AuxModule name="Ajuste fino" active={toggles.fine} onClick={() => toggle("fine")} />
+        <button type="button" className="aux-module" onClick={quickExitNow}><span className="termux-code-icon" aria-hidden="true"><LogOut size={22} /></span><span><b>Bypass</b><small>Saída rápida</small></span><i><ChevronRight size={15} /></i></button>
       </div>}
       {tab === "injection" && <div className="aux-injection yx-injection"><div className="aux-action-row"><button onClick={() => { openGame("normal"); inject("FF NORMAL"); }} disabled={Boolean(injecting)}>ABRIR FF NORMAL</button><button onClick={() => { openGame("max"); inject("FF MAX"); }} disabled={Boolean(injecting)}>ABRIR FF MAX</button></div><div className={`aux-injection-state ${active ? "active" : ""}`}>{injecting ? <><RefreshCw className="spin" size={18} /> Preparando...</> : active ? <><span className="aux-green-dot" /> {active} pronto</> : "Escolha uma versão do jogo"}</div><div className="aux-console">{logs.map((log, index) => <div key={`${log}-${index}`} className={log.includes("SUCESSO") ? "success" : ""}><span>[{new Date().toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit", second: "2-digit" })}]</span> {log}</div>)}</div></div>}
       <footer className="aux-footer">CLEAN SENSI <b> / PERFIL DE MIRA</b></footer>

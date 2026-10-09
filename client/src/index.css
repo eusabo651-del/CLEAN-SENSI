@@ -1084,3 +1084,9 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   .yx-aux-console .termux-code-icon { width: 46px; height: 46px; flex-basis: 46px; border-radius: 13px; }
   .yx-aux-console .yx-module-grid .termux-code-icon { width: 46px; height: 46px; }
 }
+
+/* Saída rápida acionada pelo módulo Bypass. */
+.yx-bypass-overlay { position: fixed; z-index: 9999; inset: 0; display: grid; place-content: center; justify-items: center; gap: 9px; padding: 24px; color: #edf7ff; background: #06101e; text-align: center; animation: quick-exit-fade .18s ease both; }
+.yx-bypass-mark { display: grid; place-items: center; width: 54px; height: 54px; margin-bottom: 5px; border: 1px solid #28517b; border-radius: 50%; color: #9dccff; background: #10233a; }
+.yx-bypass-overlay b { font-size: 14px; }
+.yx-bypass-overlay span { color: #91a5bf; font-size: 11px; }
