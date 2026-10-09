@@ -166,7 +166,6 @@ function LoginScreen() {
           <span className="eyebrow"><span className="eyebrow-dot" /> ACESSO EXCLUSIVO</span>
           <h1>CLEAN<br /><em>SENSI</em></h1>
           <p>Entre com sua chave e acesse seu espaço de controle.</p>
-          <div className="login-stats"><div><b>01</b><span>GERADOR<br />SENSI</span></div><div><b>∞</b><span>AJUSTES<br />POSSÍVEIS</span></div></div>
         </div>
         <div className="login-card-wrap">
           <div className="login-card-topline"><span className="red-line" /><span>CLEAN SENSI / {adminMode ? "PRIVATE" : "LICENSE"}</span><span className="online-dot" /></div>
@@ -183,7 +182,7 @@ function LoginScreen() {
           </div>
         </div>
       </section>
-      <footer className="login-footer"><span>CLEAN SENSI / PERFORMANCE STUDIO</span><span>Auxilio</span><span className="footer-red">●</span></footer>
+      <footer className="login-footer"><span>CLEAN SENSI / AUXILIO DE MIRA</span><span>Auxilio</span><span className="footer-red">●</span></footer>
       <InstallNotice />
     </main>
   );
@@ -295,8 +294,8 @@ function AuxilioPage() {
     {quickExit && <div className="yx-bypass-overlay" role="status" aria-live="polite"><div className="yx-bypass-mark"><LogOut size={22} /></div><b>Saída rápida</b><span>Sessão encerrada neste site.</span></div>}
     <section className="yx-aux-window yx-aux-console">
       <header className="yx-aux-heading">
-        <div className="yx-aux-heading-copy"><span>PAINEL AUXILIAR / CONTROLE FINO</span><h1>CLEAN SENSI</h1><p>Ajuste sua sessão por módulos, sem sair do painel.</p></div>
-        <div className="yx-aux-heading-side"><span className="yx-aux-status"><i /> ONLINE</span><span className="yx-aux-mode-count"><b>04</b><small>PURPOU DEV</small></span></div>
+        <div className="yx-aux-heading-copy"><span>AUXILIO / DE MIRA</span><h1>CLEAN SENSI</h1><p>Ajuste por módulos, sem sair do painel.</p></div>
+        <div className="yx-aux-heading-side"><span className="yx-aux-status"><i /> ONLINE</span><span className="yx-aux-mode-count"><b>00</b><small>CLEAN SENSI</small></span></div>
       </header>
       <nav className="yx-aux-tabs" aria-label="Seções do auxílio">
         {tabs.map(item => <button key={item.id} className={tab === item.id ? "active" : ""} onClick={() => setTab(item.id)}>{item.icon && <item.icon size={17} />}<span>{item.label}</span></button>)}
