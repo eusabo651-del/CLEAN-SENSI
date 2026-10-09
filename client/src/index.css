@@ -935,7 +935,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 }
 
 
-/* Logo oficial enviada para este build e arte XM8 usada como ícone dos controles. */
+/* Logo CLEAN SENSI e ícones de código usados nos controles do painel. */
 .brand-icon { overflow: hidden; border: 1px solid #22528f; background: #020712; box-shadow: 0 8px 25px #0750a433; }
 .brand-icon img { display: block; width: 100%; height: 100%; border-radius: inherit; object-fit: cover; }
 .login-photo.clean-brand-hero { display: grid; place-items: center; background: radial-gradient(circle at 50% 44%, #12396a 0, #0a1930 39%, #06101d 74%); }
@@ -946,15 +946,10 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .about-eye-banner .about-brand-logo { position: relative; z-index: 1; display: block; width: min(68%, 300px); height: auto; aspect-ratio: 1; border-radius: 50%; object-fit: contain; filter: none; box-shadow: 0 16px 50px #0009; }
 .yx-aux-window { background-image: radial-gradient(circle at 90% 0, #14395d50, transparent 38%), linear-gradient(145deg, #0c1d32, #07111e 75%) !important; }
 .yx-aux-window > .yx-aux-heading { min-height: 82px; }
-.xm8-weapon { display: block; width: 58px; height: 31px; flex: 0 0 58px; object-fit: contain; object-position: center; filter: drop-shadow(0 3px 6px #0009); }
-.aux-toggle-row.yx-aim-row .xm8-weapon { width: 60px; height: 32px; flex-basis: 60px; }
-.yx-module-grid .aux-module .xm8-weapon { width: 52px; height: 28px; flex-basis: 52px; }
 @media (max-width: 760px) {
   .login-photo.clean-brand-hero .clean-brand-hero-logo { width: min(62%, 230px); }
   .about-eye-banner .about-brand-logo { width: min(66%, 220px); }
   .yx-aux-window > .yx-aux-heading { min-height: 71px; }
-  .aux-toggle-row.yx-aim-row .xm8-weapon { width: 45px; height: 25px; flex-basis: 45px; }
-  .yx-module-grid .aux-module .xm8-weapon { width: 42px; height: 23px; flex-basis: 42px; }
 }
 
 
@@ -1002,7 +997,6 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .yx-aux-console .aux-toggle-row.yx-aim-row:first-child { display: grid; grid-template-columns: 72px minmax(0, 1fr) 46px; align-items: center; gap: 14px; min-height: 116px; padding: 15px; border: 1px solid #1b405b; border-radius: 17px; background: linear-gradient(140deg, #10263a, #0b1928); box-shadow: inset 0 1px #b7eaff08; }
 .yx-aux-console .aux-toggle-row.yx-aim-row:hover { transform: translateY(-2px); border-color: #3b8797; background: linear-gradient(140deg, #12344a, #0c1d2c); }
 .yx-aux-console .aux-toggle-row.yx-aim-row:nth-child(5) { grid-column: 1 / -1; }
-.yx-aux-console .yx-aim-row .xm8-weapon { width: 72px; height: 54px; flex: 0 0 72px; padding: 10px 6px; border: 1px solid #214a63; border-radius: 13px; background: linear-gradient(145deg, #0b1d2c, #102a3c); object-fit: contain; }
 .yx-aux-console .yx-aim-row .yx-aim-copy { min-width: 0; }
 .yx-aux-console .yx-aim-row b { color: #e8f5ff; font-size: 13px; line-height: 1.3; }
 .yx-aux-console .yx-aim-row small { margin-top: 6px; color: #89a7bf; font-size: 10px; line-height: 1.4; }
@@ -1013,7 +1007,6 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .yx-aux-console .yx-module-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
 .yx-aux-console .yx-module-grid .aux-module { display: flex; align-items: center; gap: 15px; min-height: 108px; padding: 15px; border: 1px solid #1b405b; border-radius: 17px; background: linear-gradient(140deg, #10263a, #0b1928); }
 .yx-aux-console .yx-module-grid .aux-module:hover { border-color: #3b8797; background: #102a3e; }
-.yx-aux-console .yx-module-grid .aux-module .xm8-weapon { width: 70px; height: 53px; flex: 0 0 70px; padding: 10px 6px; border: 1px solid #214a63; border-radius: 13px; background: #0b1d2c; object-fit: contain; }
 .yx-aux-console .yx-module-grid .aux-module > span { flex: 1; min-width: 0; }
 .yx-aux-console .yx-module-grid .aux-module b { color: #e8f5ff; }
 .yx-aux-console .yx-module-grid .aux-module small { color: #89a7bf; }
@@ -1051,7 +1044,6 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   .yx-aux-console .aux-toggle-row.yx-aim-row,
   .yx-aux-console .aux-toggle-row.yx-aim-row:first-child,
   .yx-aux-console .aux-toggle-row.yx-aim-row:nth-child(5) { grid-column: auto; grid-template-columns: 58px minmax(0, 1fr) 42px; gap: 10px; min-height: 93px; padding: 11px; }
-  .yx-aux-console .yx-aim-row .xm8-weapon { width: 58px; height: 48px; flex-basis: 58px; padding: 8px 4px; }
   .yx-aux-console .yx-aim-row b { font-size: 11px; }
   .yx-aux-console .yx-aim-row small { margin-top: 4px; font-size: 9px; }
   .yx-aux-console .yx-aim-row i { width: 40px; height: 23px; flex-basis: 40px; }
@@ -1059,7 +1051,6 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   .yx-aux-console .yx-aim-row i.on em { transform: translateX(17px); }
   .yx-aux-console .yx-module-grid { grid-template-columns: 1fr; gap: 9px; }
   .yx-aux-console .yx-module-grid .aux-module { min-height: 88px; padding: 11px; gap: 12px; }
-  .yx-aux-console .yx-module-grid .aux-module .xm8-weapon { width: 58px; height: 46px; flex-basis: 58px; padding: 8px 4px; }
   .yx-aux-console .yx-performance-panel { grid-template-columns: 42px minmax(0, 1fr); min-height: 215px; padding: 20px 15px; gap: 7px 12px; }
   .yx-aux-console .yx-performance-panel > svg { width: 34px; height: 34px; }
   .yx-aux-console .yx-performance-panel h2 { font-size: 16px; }
@@ -1080,4 +1071,16 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   .yx-aux-console .yx-aux-title h2 { font-size: 16px; }
   .yx-aux-section-number b { font-size: 25px; }
   .yx-aux-console .yx-injection .aux-action-row { grid-template-columns: 1fr; }
+}
+
+
+/* Logo no destaque do gerador, substituindo selo e título anterior. */
+.hero-copy .hero-brand-logo { display: block; width: 148px; height: 148px; margin: 0 0 13px -7px; border-radius: 50%; object-fit: contain; filter: drop-shadow(0 12px 24px #0009); }
+.yx-aux-console .termux-code-icon { display: grid; place-items: center; width: 58px; height: 58px; flex: 0 0 58px; border: 1px solid #28758a; border-radius: 15px; color: #63dbe5; background: linear-gradient(145deg, #10374a, #0b2234); box-shadow: inset 0 1px #b4f4ff17, 0 8px 18px #0004; }
+.yx-aux-console .yx-aim-row .termux-code-icon { margin-inline: auto; }
+.yx-aux-console .yx-module-grid .termux-code-icon { width: 58px; height: 58px; }
+@media (max-width: 760px) {
+  .hero-copy .hero-brand-logo { width: 112px; height: 112px; margin-left: -4px; }
+  .yx-aux-console .termux-code-icon { width: 46px; height: 46px; flex-basis: 46px; border-radius: 13px; }
+  .yx-aux-console .yx-module-grid .termux-code-icon { width: 46px; height: 46px; }
 }

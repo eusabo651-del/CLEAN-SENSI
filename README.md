@@ -56,7 +56,7 @@ O botão **Discord** na tela de login e a página Sobre direcionam para [discord
 
 ## Ativos visuais
 
-A logo principal foi fornecida para este projeto. A imagem da XM8 (`client/public/xm8-free-fire.webp`) é da página comunitária [XM8 — Free Fire Wiki](https://garenafreefire.fandom.com/wiki/XM8), cujo conteúdo comunitário é indicado como **CC BY-SA**; a atribuição e a licença dessa imagem permanecem aplicáveis ao ativo.
+A logo principal foi fornecida para este projeto. Os ícones de código da interface são renderizados pelo pacote Lucide usado pela aplicação.
 
 ## PWA
 
