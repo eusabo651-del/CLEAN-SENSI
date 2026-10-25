@@ -48,7 +48,8 @@ function tokenForAdmin() {
 }
 
 function tokenForUser(key: MockKey) {
-  const expiresAt = key.expiresAt ? key.expiresAt * 1000 : Date.now() + 31_536_000_000;
+  const keyExpiresAt = keyExpirySeconds(key);
+  const expiresAt = keyExpiresAt ? keyExpiresAt * 1000 : Date.now() + 31_536_000_000;
   const payload = encode(JSON.stringify({ role: "user", accessKey: key.key, username: key.key, expiresAt }));
   return `${payload}.${sign(payload)}`;
 }
@@ -93,6 +94,11 @@ async function mockRequest<T>(path = "", init?: RequestInit): Promise<T> {
   return response.json() as Promise<T>;
 }
 
+async function deleteMockKeyIfPresent(id: string) {
+  const response = await fetch(`${MOCKAPI_KEYS_URL}/${encodeURIComponent(id)}`, { method: "DELETE", headers: { "content-type": "application/json" }, cache: "no-store" });
+  if (!response.ok && response.status !== 404) throw new Error(`MockAPI delete failed with status ${response.status}`);
+}
+
 async function listAllMockKeys() {
   const rows: MockKey[] = [];
   const seen = new Set<string>();
@@ -110,6 +116,14 @@ async function listAllMockKeys() {
   return rows;
 }
 
+async function deleteExpiredMockKeys(keys: MockKey[], now = Math.floor(Date.now() / 1000)) {
+  const expired = keys.filter((key) => isExpiredKey(key, now));
+  for (let index = 0; index < expired.length; index += 5) {
+    await Promise.all(expired.slice(index, index + 5).map((key) => deleteMockKeyIfPresent(key.id ?? key.key)));
+  }
+  return expired.length;
+}
+
 function normalize(value: MockKey): MockKey {
   return { ...value, used: Boolean(value.used), device: value.device ?? "", expire: Number(value.expire ?? 0), createdAt: Number(value.createdAt ?? 0), activatedAt: Number(value.activatedAt ?? 0), expiresAt: Number(value.expiresAt ?? 0) };
 }
@@ -120,9 +134,10 @@ function numericId(value: MockKey) {
 }
 function asLicense(value: MockKey) {
   const key = normalize(value);
-  const expires = key.expiresAt ? new Date(key.expiresAt * 1000) : null;
+  const expiresAtSeconds = keyExpirySeconds(key);
+  const expires = expiresAtSeconds ? new Date(expiresAtSeconds * 1000) : null;
   const duration = durationFromStoredExpiry(key.type ?? "daily", key.expire ?? 0);
-  return { id: numericId(key), userId: numericId({ ...key, key: `${key.key}:user` }), username: key.username ?? key.key, accessKey: key.key, planId: key.type ?? "custom", durationValue: duration.value, durationUnit: duration.unit, expiresAt: expires, status: key.status ?? (key.expiresAt && key.expiresAt <= Math.floor(Date.now() / 1000) ? "revoked" : "active"), deviceId: key.device || null, used: Boolean(key.used || key.device || key.activatedAt), lastLoginAt: key.activatedAt ? new Date(key.activatedAt * 1000) : null, createdAt: new Date((key.createdAt ?? 0) * 1000), updatedAt: new Date() };
+  return { id: numericId(key), userId: numericId({ ...key, key: `${key.key}:user` }), username: key.username ?? key.key, accessKey: key.key, planId: key.type ?? "custom", durationValue: duration.value, durationUnit: duration.unit, expiresAt: expires, status: key.status ?? (isExpiredKey(key) ? "revoked" : "active"), deviceId: key.device || null, used: Boolean(key.used || key.device || key.activatedAt), lastLoginAt: key.activatedAt ? new Date(key.activatedAt * 1000) : null, createdAt: new Date((key.createdAt ?? 0) * 1000), updatedAt: new Date() };
 }
 function bodyInput(input: any) {
   if (input && typeof input === "object" && input["0"] !== undefined) {
@@ -136,6 +151,18 @@ function activationExpirySeconds(type: string, expire: number, activatedAt: numb
   if (type === "perm") return 0;
   const secondsPerUnit = type === "hourly" ? 60 * 60 : 24 * 60 * 60;
   return activatedAt + Math.max(1, Number(expire) || 1) * secondsPerUnit;
+}
+function keyExpirySeconds(key: MockKey) {
+  if (key.type === "perm") return 0;
+  const savedExpiry = Number(key.expiresAt ?? 0);
+  if (savedExpiry > 0) return savedExpiry;
+  const activatedAt = Number(key.activatedAt ?? 0) || ((key.used || key.device) ? Number(key.createdAt ?? 0) : 0);
+  if (!activatedAt) return 0;
+  return activationExpirySeconds(key.type ?? "daily", Number(key.expire ?? 1), activatedAt);
+}
+function isExpiredKey(key: MockKey, now = Math.floor(Date.now() / 1000)) {
+  const expiresAt = keyExpirySeconds(key);
+  return expiresAt > 0 && expiresAt <= now;
 }
 async function notifyInvalidAdminLogin(req: any) {
   const webhook = process.env.DISCORD_ADMIN_LOGIN_WEBHOOK?.trim();
@@ -230,15 +257,16 @@ export default async function trpc(req: any, res: any) {
       const accessKey = String(data.accessKey ?? "").trim();
       const deviceId = String(data.deviceId ?? "").trim().slice(0, 160);
       if (!accessKey || deviceId.length < 8) return fail(res, 400, "Informe uma key válida e permita a identificação do dispositivo");
+      const now = Math.floor(Date.now() / 1000);
       const keys = (await listAllMockKeys()).map(normalize);
       const key = keys.find((item) => item.key === accessKey);
+      await deleteExpiredMockKeys(keys, now);
       if (!key) return fail(res, 401, "Key inválida");
       if (key.status === "blocked") return fail(res, 403, "Esta key foi bloqueada pelo administrador");
       if (key.status === "revoked") return fail(res, 403, "Esta key foi revogada");
-      if (key.expiresAt && key.expiresAt <= Math.floor(Date.now() / 1000)) return fail(res, 403, "Esta key expirou");
+      if (isExpiredKey(key, now)) return fail(res, 403, "Esta key expirou");
       if (key.device && key.device !== deviceId) return fail(res, 403, "Esta key já está vinculada a outro dispositivo");
       const activatedNow = !key.activatedAt;
-      const now = Math.floor(Date.now() / 1000);
       const activatedAt = key.activatedAt || now;
       const activationExpiresAt = key.expiresAt || activationExpirySeconds(key.type ?? "daily", Number(key.expire || 1), activatedAt);
       const updated = normalize(await mockRequest<MockKey>(`/${encodeURIComponent(key.id ?? key.key)}`, { method: "PUT", body: JSON.stringify({ device: deviceId, used: true, activatedAt, expiresAt: activationExpiresAt, onlineAt: now }) }));
@@ -250,16 +278,21 @@ export default async function trpc(req: any, res: any) {
       const session = readSession(req);
       if (!session) return ok(res, null);
       if (session.role === "admin") return ok(res, { role: "admin", username: "CLEADMIN00", name: "CLEADMIN00", email: null });
-      const key = (await listAllMockKeys()).map(normalize).find((item) => item.key === session.accessKey);
-      if (!key || key.status === "revoked" || key.status === "blocked" || (key.expiresAt && key.expiresAt <= Math.floor(Date.now() / 1000))) return ok(res, null);
-      return ok(res, { role: "user", username: key.key, name: key.key, email: null, planId: key.type ?? "daily", expiresAt: key.expiresAt ? new Date(key.expiresAt * 1000) : new Date("2099-12-31T23:59:59Z"), deviceId: key.device || null });
+      const keys = (await listAllMockKeys()).map(normalize);
+      await deleteExpiredMockKeys(keys);
+      const key = keys.find((item) => item.key === session.accessKey);
+      if (!key || key.status === "revoked" || key.status === "blocked" || isExpiredKey(key)) return ok(res, null);
+      const expiresAt = keyExpirySeconds(key);
+      return ok(res, { role: "user", username: key.key, name: key.key, email: null, planId: key.type ?? "daily", expiresAt: expiresAt ? new Date(expiresAt * 1000) : new Date("2099-12-31T23:59:59Z"), deviceId: key.device || null });
     }
     if (path === "auth.logout") { res.setHeader("Set-Cookie", "rbxis_session_v3=; Path=/; HttpOnly; Max-Age=0"); return ok(res, { success: true }); }
     if (path === "generator.generate" || path === "generator.history" || path === "generator.favorites" || path === "generator.toggleFavorite") {
       const session = readSession(req);
       if (!session || session.role !== "user") return fail(res, 403, "O gerador é exclusivo para usuários");
-      const userKey = currentUserKey(session, (await listAllMockKeys()).map(normalize));
-      if (!userKey) return fail(res, 403, "A licença não está ativa");
+      const keys = (await listAllMockKeys()).map(normalize);
+      await deleteExpiredMockKeys(keys);
+      const userKey = currentUserKey(session, keys);
+      if (!userKey || userKey.status === "revoked" || userKey.status === "blocked" || isExpiredKey(userKey)) return fail(res, 403, "A licença não está ativa");
       const history = Array.isArray(userKey.history) ? userKey.history : [];
       if (path === "generator.history" || path === "generator.favorites") return ok(res, history.filter((item) => path === "generator.history" || item.favorite));
       if (path === "generator.toggleFavorite") {
@@ -275,17 +308,19 @@ export default async function trpc(req: any, res: any) {
     if (!readAdminSession(req)) return fail(res, 401, "Sessão administrativa inválida");
 
     const raw = (await listAllMockKeys()).map(normalize);
-    if (path === "admin.licenses") return ok(res, raw.map(asLicense));
+    await deleteExpiredMockKeys(raw);
+    const availableKeys = raw.filter((key) => !isExpiredKey(key));
+    if (path === "admin.licenses") return ok(res, availableKeys.map(asLicense));
     if (path === "admin.stats") {
-      const licenses = raw.map(asLicense); const active = licenses.filter((x) => x.status === "active");
+      const licenses = availableKeys.map(asLicense); const active = licenses.filter((x) => x.status === "active");
       return ok(res, { totalLicenses: licenses.length, activeLicenses: active.length, revokedLicenses: licenses.filter((x) => x.status === "revoked").length, blockedLicenses: licenses.filter((x) => x.status === "blocked").length, boundDevices: licenses.filter((x) => Boolean(x.deviceId)).length });
     }
     if (path === "admin.resetAll") {
       if (data.confirm !== true) return fail(res, 400, "Confirme o reset total antes de excluir as keys");
-      for (const key of raw) await mockRequest<void>(`/${encodeURIComponent(key.id ?? key.key)}`, { method: "DELETE" });
-      return ok(res, { success: true, count: raw.length });
+      for (const key of availableKeys) await mockRequest<void>(`/${encodeURIComponent(key.id ?? key.key)}`, { method: "DELETE" });
+      return ok(res, { success: true, count: availableKeys.length });
     }
-    const match = (id: number) => raw.find((value) => numericId(value) === id);
+    const match = (id: number) => availableKeys.find((value) => numericId(value) === id);
     if (path === "admin.createLicense") {
       const username = String(data.username ?? "").trim();
       const planId = String(data.planId ?? "");

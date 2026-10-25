@@ -120,14 +120,47 @@ describe("Vercel admin login", () => {
     const now = Math.floor(Date.now() / 1000);
     const row = { id: "monthly-expired-1", key: "CLEAN-SENSI-monthly-expired", username: "monthly_user", used: true, device: "device-monthly-1234", expire: 30, type: "monthly", createdAt: now - 31 * 24 * 60 * 60, activatedAt: now - 30 * 24 * 60 * 60 - 1, expiresAt: now - 1, status: "active" };
     const fetchMock = vi.fn(async (_input: RequestInfo | URL, init?: RequestInit) => {
-      if ((init?.method ?? "GET") === "GET") return new Response(JSON.stringify([row]), { status: 200, headers: { "content-type": "application/json" } });
-      throw new Error("Uma key vencida não deve ser atualizada durante o login");
+      if ((init?.method ?? "GET") === "GET") return new Response(JSON.stringify(row.id ? [row] : []), { status: 200, headers: { "content-type": "application/json" } });
+      if (init?.method === "DELETE") { delete (row as Partial<typeof row>).id; return new Response(null, { status: 204 }); }
+      throw new Error("Uma key vencida não deve ser reativada durante o login");
     });
     vi.stubGlobal("fetch", fetchMock);
     const response = await invoke("auth.login", { accessKey: row.key, deviceId: "device-monthly-1234" });
     expect(response.statusCode).toBe(403);
     expect(JSON.parse(response.body).error.json.message).toContain("expirou");
     expect(fetchMock.mock.calls.some(([, init]) => init?.method === "PUT")).toBe(false);
+    expect(fetchMock.mock.calls.some(([, init]) => init?.method === "DELETE")).toBe(true);
+    expect(row.id).toBeUndefined();
+  });
+
+  it("blocks an existing user session after expiry and deletes its MockAPI key", async () => {
+    const now = Math.floor(Date.now() / 1000);
+    let rows: Record<string, unknown>[] = [{ id: "hourly-session-1", key: "CLEAN-SENSI-hourly-session", username: "hourly_user", used: true, device: "device-hourly-1234", expire: 1, type: "hourly", createdAt: now - 60, activatedAt: now - 60, expiresAt: now + 3600, status: "active" }];
+    const fetchMock = vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
+      const method = init?.method ?? "GET";
+      if (method === "GET") return new Response(JSON.stringify(rows), { status: 200, headers: { "content-type": "application/json" } });
+      const id = decodeURIComponent(new URL(String(input)).pathname.split("/").pop() ?? "");
+      if (method === "PUT") {
+        const row = rows.find(value => value.id === id);
+        if (!row) return new Response("Not found", { status: 404 });
+        Object.assign(row, JSON.parse(String(init?.body)));
+        return new Response(JSON.stringify(row), { status: 200, headers: { "content-type": "application/json" } });
+      }
+      if (method === "DELETE") {
+        rows = rows.filter(row => row.id !== id);
+        return new Response(null, { status: 204 });
+      }
+      throw new Error(`Unexpected MockAPI method: ${method}`);
+    });
+    vi.stubGlobal("fetch", fetchMock);
+
+    const login = await invoke("auth.login", { accessKey: "CLEAN-SENSI-hourly-session", deviceId: "device-hourly-1234" });
+    expect(login.statusCode).toBe(200);
+    rows[0].expiresAt = now - 1;
+    const generated = await invoke("generator.generate", { operatingSystem: "android", device: "Android phone", performance: "medium" }, login.headers["Set-Cookie"]);
+    expect(generated.statusCode).toBe(403);
+    expect(rows).toEqual([]);
+    expect(fetchMock.mock.calls.some(([, init]) => init?.method === "DELETE")).toBe(true);
   });
 
   it("fails closed when the session secret is missing", async () => {
@@ -172,7 +205,7 @@ describe("Vercel admin login", () => {
     expect(responseData(second).activatedNow).toBe(false);
   });
 
-  it("deletes every MockAPI key only through the authenticated resetAll procedure", async () => {
+  it("keeps resetAll admin-only after expired keys are automatically purged", async () => {
     let rows: Record<string, unknown>[] = [
       { id: "201", key: "YXZ-daily-one", used: false, device: "", expire: 1, type: "daily", createdAt: 1, activatedAt: 0, expiresAt: 0, status: "active" },
       { id: "202", key: "YXZ-weekly-two", used: true, device: "hwid", expire: 7, type: "weekly", createdAt: 2, activatedAt: 2, expiresAt: 3, status: "active" },
@@ -193,7 +226,7 @@ describe("Vercel admin login", () => {
     const reset = await invoke("admin.resetAll", { confirm: true }, login.headers["Set-Cookie"]);
     expect(login.statusCode).toBe(200);
     expect(reset.statusCode).toBe(200);
-    expect(responseData(reset)).toEqual({ success: true, count: 2 });
+    expect(responseData(reset)).toEqual({ success: true, count: 1 });
     expect(rows).toEqual([]);
     expect(fetchMock.mock.calls.filter(([, init]) => init?.method === "DELETE")).toHaveLength(2);
   });

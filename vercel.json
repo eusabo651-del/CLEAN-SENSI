@@ -4,8 +4,12 @@
   "outputDirectory": "dist/public",
   "functions": {
     "api/health.ts": { "maxDuration": 10 },
-    "api/trpc.ts": { "maxDuration": 30 }
+    "api/trpc.ts": { "maxDuration": 30 },
+    "api/cleanup-expired.ts": { "maxDuration": 30 }
   },
+  "crons": [
+    { "path": "/api/cleanup-expired", "schedule": "0 3 * * *" }
+  ],
   "headers": [
     { "source": "/sw.js", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },
     { "source": "/manifest.json", "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }] },

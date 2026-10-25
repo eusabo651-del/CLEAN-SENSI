@@ -26,8 +26,11 @@ Importe este repositório na Vercel e configure estas variáveis de ambiente em 
 - `RBXIS_ADMIN_KEY`: chave privada e exclusiva para o login administrativo.
 - `RBXIS_SESSION_SECRET`: segredo aleatório longo. Gere um valor novo com `openssl rand -hex 32`.
 - `MOCKAPI_KEYS_URL`: `https://6ac92b96fd7c536b1bda8e99.mockapi.io/licencas`.
+- `CRON_SECRET`: valor aleatório privado usado para autenticar a rotina Vercel que remove keys expiradas. Gere com `openssl rand -hex 32` e configure no ambiente Production da Vercel.
 
 Não inclua valores de segredo em commits, issues públicas ou arquivos de ambiente publicados.
+
+As licenças temporárias começam a contar na primeira ativação; o prazo em horas ou dias é conferido no login e nas chamadas protegidas. Registros vencidos são removidos quando a API os encontra e por uma rotina agendada diária às 03:00 UTC. A rotina precisa da variável `CRON_SECRET` configurada na Vercel.
 
 ## MockAPI
 
